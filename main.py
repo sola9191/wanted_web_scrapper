@@ -20,6 +20,8 @@ def search():
     else : 
         jobs = w.get_job_data(keyword)
         db[keyword] = jobs
+        print(jobs)
+        print(db)
     return render_template("search.html", keyword=keyword, jobs=jobs)
 
 @app.route("/export")

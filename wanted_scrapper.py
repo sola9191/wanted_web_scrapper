@@ -13,19 +13,18 @@ def get_job_data(keyword):
 
     try: 
         p = sync_playwright().start()
-        browser = p.chromium.launch(headless=False) #headless --> keyword arguments
-        page = browser.new_page()
+        browser = p.chromium.launch(headless=True, slow_mo=500)
+        context = browser.new_context(
+        viewport={"width": 1280, "height": 800},
+        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/91.0 Safari/537.36")
+        page = context.new_page()
         time.sleep(2)
         page.goto("https://www.wanted.co.kr/")
-        time.sleep(2)
+        page.wait_for_selector("button.Aside_searchButton__Ib5Dn", timeout=10000)
         page.click("button.Aside_searchButton__Ib5Dn")
-        time.sleep(2)
         page.locator("input[placeholder='검색어를 입력해 주세요.']").fill(keyword)
-        time.sleep(2)
         page.keyboard.down("Enter")
-        time.sleep(2)
         page.click("a#search_tab_position")
-        time.sleep(2)
         
         # scroll down
         for x in range(10):
