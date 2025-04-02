@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, send_file
 import wanted_scrapper as w
 
-app = Flask("__name__")
+app = Flask(__name__)
 
 db = {
     'python' : []
@@ -31,4 +31,6 @@ def export():
         return redirect(f"/search?keyword={keyword}")
     w.create_excel_file(keyword)
     return send_file(f"{keyword}.csv", as_attachment=True)
-app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
