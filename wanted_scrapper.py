@@ -6,22 +6,26 @@ import time
 from bs4 import BeautifulSoup
 import csv
 
-browser = None
-p = None
-jobs_db = []  
-
 def get_job_data(keyword): 
+    browser = None
+    p = None
+    jobs_db = []  
 
     try: 
         p = sync_playwright().start()
-        browser = p.chromium.launch(headless=True) #headless --> keyword arguments
+        browser = p.chromium.launch(headless=False) #headless --> keyword arguments
         page = browser.new_page()
+        time.sleep(2)
         page.goto("https://www.wanted.co.kr/")
         time.sleep(2)
         page.click("button.Aside_searchButton__Ib5Dn")
+        time.sleep(2)
         page.locator("input[placeholder='검색어를 입력해 주세요.']").fill(keyword)
+        time.sleep(2)
         page.keyboard.down("Enter")
+        time.sleep(2)
         page.click("a#search_tab_position")
+        time.sleep(2)
         
         # scroll down
         for x in range(10):
@@ -49,18 +53,17 @@ def get_job_data(keyword):
         if browser:
             browser.close() # browser 닫기
         if p :
-            p.close()
-        # p.stop() # playwright 종료
+            p.stop()
         return jobs_db
 
-def create_excel_file(keyword):
+def create_excel_file(keyword, jobs):
     
     file = open(f"{keyword}.csv", "w", encoding="utf-8")
     writter = csv.writer(file)
     writter.writerow(["title","company_name", "link"])
 
-    for x in jobs_db:
-        writter.writerow(x.values())
+    for job in jobs:
+        writter.writerow(job.values())
     file.close()
 
 

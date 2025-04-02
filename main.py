@@ -3,12 +3,12 @@ import wanted_scrapper as w
 
 app = Flask(__name__)
 
-db = {
-    'python' : []
-}
+db = {}
+
 @app.route('/')
 def home():
     return render_template("home.html", name="sola")
+
 @app.route('/search')
 def search():
     keyword = request.args.get("keyword")
@@ -29,8 +29,10 @@ def export():
         return redirect("/")
     if keyword not in db:
         return redirect(f"/search?keyword={keyword}")
-    w.create_excel_file(keyword)
-    return send_file(f"{keyword}.csv", as_attachment=True)
+    else :
+        jobs = db[keyword]
+        w.create_excel_file(keyword, jobs)
+        return send_file(f"{keyword}.csv", as_attachment=True)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
