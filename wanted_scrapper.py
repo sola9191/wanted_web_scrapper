@@ -12,7 +12,7 @@ def get_job_data(keyword):
 
     try: 
         p = sync_playwright().start()
-        browser = p.chromium.launch(headless=False) #headless --> keyword arguments
+        browser = p.chromium.launch(headless=True) #headless --> keyword arguments
         page = browser.new_page()
         page.goto("https://www.wanted.co.kr/")
         time.sleep(2)
@@ -44,9 +44,12 @@ def get_job_data(keyword):
     except Exception as e:
         print(f"Error: {e}")
     finally:   
-        browser.close() # browser 닫기
+        if browser:
+            browser.close() # browser 닫기
+        if p :
+            p.close()
         # p.stop() # playwright 종료
-    return jobs_db
+        return jobs_db
 
 def create_excel_file(keyword):
     
