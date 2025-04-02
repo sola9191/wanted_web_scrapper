@@ -6,6 +6,8 @@ import time
 from bs4 import BeautifulSoup
 import csv
 
+browser = None
+p = None
 jobs_db = []  
 
 def get_job_data(keyword): 
