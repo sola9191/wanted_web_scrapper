@@ -24,9 +24,15 @@ def get_job_data(keyword):
         time.sleep(2)
         print("페이지이동")
         # page.goto("https://www.wanted.co.kr/")
-        page.goto("https://www.wanted.co.kr/", timeout=60000, wait_until="domcontentloaded")
+        # page.goto("https://www.wanted.co.kr/", timeout=60000, wait_until="domcontentloaded")
+        page.goto("https://www.wanted.co.kr/", wait_until="domcontentloaded", timeout=60000)
+        print("check html")
+        with open("debug.html", "w", encoding="utf-8") as f:
+            f.write(page.content())
+        print("✅ debug.html 저장 완료")
         print("wait for selector")
-        page.wait_for_selector("button.Aside_searchButton__Ib5Dn", timeout=10000)
+        # page.wait_for_selector("button.Aside_searchButton__Ib5Dn", timeout=10000)
+        page.wait_for_selector("button[aria-label='검색']", timeout=15000)
         print("click page")
         page.click("button.Aside_searchButton__Ib5Dn")
         print("fill keyword")
@@ -43,6 +49,8 @@ def get_job_data(keyword):
             time.sleep(2)
 
         content =  page.content()
+        print("==================content===================")
+        print(content)
         soup = BeautifulSoup(content, "html.parser")
         jobs = soup.find_all("div", class_="JobCard_container__zQcZs")
 
