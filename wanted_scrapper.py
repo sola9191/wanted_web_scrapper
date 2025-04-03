@@ -21,13 +21,20 @@ def get_job_data(keyword):
         user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/91.0 Safari/537.36")
         page = context.new_page()
         time.sleep(2)
+        print("페이지이동")
         page.goto("https://www.wanted.co.kr/")
+        print("wait for selector")
         page.wait_for_selector("button.Aside_searchButton__Ib5Dn", timeout=10000)
+        print("click page")
         page.click("button.Aside_searchButton__Ib5Dn")
+        print("fill keyword")
         page.locator("input[placeholder='검색어를 입력해 주세요.']").fill(keyword)
+        print("keyboard down")
         page.keyboard.down("Enter")
+        print("click page")
         page.click("a#search_tab_position")
-        
+
+        print("scroll down")
         # scroll down
         for x in range(10):
             page.keyboard.down("End")
@@ -37,6 +44,7 @@ def get_job_data(keyword):
         soup = BeautifulSoup(content, "html.parser")
         jobs = soup.find_all("div", class_="JobCard_container__zQcZs")
 
+        print("extract job data from jobs")
         for job in jobs:
             link = f"https://www.wanted.co.kr/{job.find('a')['href']}"
             title = job.find("strong", class_="JobCard_title___kfvj").text
