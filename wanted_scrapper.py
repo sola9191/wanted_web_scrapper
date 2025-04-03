@@ -13,16 +13,18 @@ def get_job_data(keyword):
 
     try: 
         p = sync_playwright().start()
-        browser = p.chromium.launch(headless=True,args=["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"])
+        # browser = p.chromium.launch(headless=True,args=["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"])
         # browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
         # browser = p.chromium.launch(headless=False, slow_mo=500)
+        browser = p.chromium.launch(headless=True,args=["--no-sandbox","--disable-gpu","--disable-dev-shm-usage"])
         context = browser.new_context(
         viewport={"width": 1280, "height": 800},
         user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/91.0 Safari/537.36")
         page = context.new_page()
         time.sleep(2)
         print("페이지이동")
-        page.goto("https://www.wanted.co.kr/")
+        # page.goto("https://www.wanted.co.kr/")
+        page.goto("https://www.wanted.co.kr/", timeout=60000, wait_until="domcontentloaded")
         print("wait for selector")
         page.wait_for_selector("button.Aside_searchButton__Ib5Dn", timeout=10000)
         print("click page")
