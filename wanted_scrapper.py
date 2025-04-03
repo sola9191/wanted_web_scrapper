@@ -35,7 +35,11 @@ def get_job_data(keyword):
         # page.wait_for_selector("button[aria-label='검색']", timeout=15000)
         # page.wait_for_selector("button[aria-label='검색']", timeout=15000, state="attached")
         # page.click("button[aria-label='검색']")
-        page.locator("button[aria-label='검색']").click(timeout=15000)
+        # page.locator("button[aria-label='검색']").click(timeout=15000)
+        page.evaluate("""
+            document.querySelector("button[aria-label='검색']").scrollIntoView()
+        """)
+        page.locator("button.Aside_searchButton__Ib5Dn").click(timeout=20000, force=True)
         print("fill keyword")
         page.locator("input[placeholder='검색어를 입력해 주세요.']").fill(keyword)
         print("keyboard down")
