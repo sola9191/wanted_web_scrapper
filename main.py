@@ -36,5 +36,14 @@ def export():
         w.create_excel_file(keyword, jobs)
         return send_file(f"{keyword}.csv", as_attachment=True)
 
+@app.route("/debug")
+def debug_file():
+    try:
+        return send_file("debug.html", as_attachment=True)
+    except Exception as e:
+        return f"❌ debug.html 다운로드 실패: {e}", 500
+    
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
+    
