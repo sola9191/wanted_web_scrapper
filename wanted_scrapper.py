@@ -13,7 +13,8 @@ def get_job_data(keyword):
 
     try: 
         p = sync_playwright().start()
-        browser = p.chromium.launch(headless=True, slow_mo=500)
+        browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
+        # browser = p.chromium.launch(headless=False, slow_mo=500)
         context = browser.new_context(
         viewport={"width": 1280, "height": 800},
         user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/91.0 Safari/537.36")
